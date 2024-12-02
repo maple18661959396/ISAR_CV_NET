@@ -90,6 +90,52 @@ class ComplexWeightedAverageCrossEntropyIgnoreUnlabeled(ComplexAverageCrossEntro
         return weighted_losses
 
 
+
+class ComplexL1Loss(nn.L1Loss):
+    def __init__(self, reduction='mean'):
+        super(ComplexL1Loss, self).__init__()
+        self.reduction = reduction
+
+    def forward(self, y_pred, y_true):
+        return F.l1_loss(y_pred, y_true, reduction=self.reduction)
+# F.l1_loss supports real-valued and complex-valued inputs.
+
+
+class ComplexSmoothL1Loss(nn.L1Loss):
+    def __init__(self, beta: float = 1.0):
+        super(ComplexSmoothL1Loss, self).__init__()
+        self.beta = beta
+
+    def forward(self, y_pred, y_true):
+        return F.smooth_l1_loss(y_pred, y_true, reduction=self.reduction, beta=self.beta)
+# F.smooth_l1_loss supports real-valued and complex-valued inputs.
+
+
+class ComplexNLLLoss(nn.NLLLoss):
+    def __init__(self):
+        super(ComplexNLLLoss, self).__init__()
+
+    def forward(self, y_pred, y_true):
+        real_loss = F.nll_loss(y_pred.real, y_true, weight=self.weight, ignore_index=self.ignore_index, reduction=self.reduction)
+        if y_pred.dtype.is_complex:
+            imag_loss = F.nll_loss(y_pred.imag, y_true, weight=self.weight, ignore_index=self.ignore_index, reduction=self.reduction)
+        else:
+            imag_loss = real_loss
+        return (real_loss + imag_loss) / 2.
+# ComplexNLLLoss Use the torch.nn.functional.nll_loss in the real and imaginary parts, respectively. Then take average
+
+
+class ComplexNLLLossAbs(nn.NLLLoss):
+    def __init__(self):
+        super(ComplexNLLLossAbs, self).__init__()
+
+    def forward(self, y_pred, y_true):
+        if y_pred.dtype.is_complex:
+            loss = F.nll_loss(torch.abs(y_pred), y_true, weight=self.weight, ignore_index=self.ignore_index, reduction=self.reduction)
+        else:
+            loss = F.nll_loss(y_pred, y_true, weight=self.weight, ignore_index=self.ignore_index, reduction=self.reduction)
+        return loss
+# Input complex tensor take modulo values then Use the torch.nn.functional.nll_loss.
 """
 y_pred = torch.randn(3, 3) + 1j * 2 * torch.rand(3, 3)
 y_true = torch.randn(3, 3)
