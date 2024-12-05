@@ -22,11 +22,13 @@ but only a limited number of operation are supported.  (hence requires PyTorch v
 ### Using [PIP]
 
 Only use complex-valued neural networks library:
+
 `pip install cv-net-library`
 
 ### Using GitHub
 
 Useful if you want to modify the source code and view the relevant tests:
+
 `https://github.com/maple18661959396/ISAR_CV_NET`
 
 ---
@@ -243,6 +245,5 @@ Thanks for the in-depth exploration of convolutional vector neural networks (CVN
 proposed in article [arXiv:2302.08286 [stat.ML]](https://doi.org/10.48550/arXiv.2302.08286) and the comprehensive 
 derivation of its theoretical basis.
 
-I would also like to express my gratitude to my teacher Sirui Tian, my senior fellow apprentice Chen Chen, 
-and all my peers in the research group for their guidance and assistance.
+
 
