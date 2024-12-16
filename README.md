@@ -241,7 +241,7 @@ class ComplexNet(nn.Module):
 
 ## Acknowledgments
 
-Thanks for the in-depth exploration of convolutional vector neural networks (CVNN) within the framework of TensorFlow 
+Thanks for the in-depth exploration of Complex-Valued Neural Network (CVNN) within the framework of TensorFlow 
 proposed in article [arXiv:2302.08286 [stat.ML]](https://doi.org/10.48550/arXiv.2302.08286) and the comprehensive 
 derivation of its theoretical basis.
 
